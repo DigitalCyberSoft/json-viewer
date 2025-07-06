@@ -1,8 +1,8 @@
-![JSONViewer Logo](https://raw.githubusercontent.com/tulios/json-viewer/master/logo.png)
+![JSONViewer Logo](https://raw.githubusercontent.com/DigitalCyberSoft/json-viewer/master/logo.png)
 
 # JSON Viewer - Community Fork
 
-![screenshot](https://raw.githubusercontent.com/tulios/json-viewer/master/screenshot.png)
+![screenshot](https://raw.githubusercontent.com/DigitalCyberSoft/json-viewer/master/screenshot.png)
 
 ## ⚠️ Security Notice
 
