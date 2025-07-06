@@ -6,23 +6,25 @@
   "repository": "https://github.com/tulios/json-viewer",
   "private": true,
   "dependencies": {
-    "archiver": "1.2.x",
-    "clean-webpack-plugin": "0.1.x",
-    "codemirror": "5.21.x",
-    "css-loader": "0.14.x",
-    "extract-text-webpack-plugin": "0.8.x",
-    "fs-extra": "0.18.x",
-    "mousetrap": "1.5.x",
-    "node-libs-browser": "^1.0.0",
-    "node-sass": "^4.5.3",
-    "promise": "7.0.x",
-    "sass-loader": "6.0.x",
-    "style-loader": "0.18.x",
-    "sweetalert": "1.0.x",
-    "webpack": "1.15.x"
+    "archiver": "^7.0.1",
+    "codemirror": "^5.65.16",
+    "fs-extra": "^11.2.0",
+    "mousetrap": "^1.6.5",
+    "promise": "^8.3.0",
+    "sweetalert": "^2.1.2"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.10.0",
+    "mini-css-extract-plugin": "^2.8.0",
+    "sass": "^1.71.0",
+    "sass-loader": "^14.1.0",
+    "style-loader": "^3.3.4",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4"
   },
   "scripts": {
     "release": "NODE_ENV=production npm run build",
-    "build": "./node_modules/.bin/webpack --progress --colors && node ./lib/release-script"
+    "build": "webpack --progress && node ./lib/release-script"
   }
 }

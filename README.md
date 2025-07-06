@@ -1,8 +1,20 @@
 ![JSONViewer Logo](https://raw.githubusercontent.com/tulios/json-viewer/master/logo.png)
 
-# JSON Viewer
+# JSON Viewer - Community Fork
 
 ![screenshot](https://raw.githubusercontent.com/tulios/json-viewer/master/screenshot.png)
+
+## ⚠️ Security Notice
+
+This is a community fork of the JSON Viewer extension. The original extension was unfortunately sold to a malicious actor who used it to compromise developer browsers. This fork was created to provide a safe, open-source alternative for developers who need JSON viewing capabilities without security risks.
+
+**This version:**
+- Has been updated to use Chrome's Manifest V3 for enhanced security
+- Contains no tracking or malicious code
+- Is fully open source and auditable
+- Will remain community-maintained
+
+## About
 
 The most beautiful and customizable JSON/JSONP highlighter that your eyes have ever seen. It is a Chrome extension for printing JSON and JSONP.
 
@@ -38,20 +50,24 @@ Features:
 
 ## Installation
 
-### Install through Chrome Web Store
+### Manual Installation (Recommended)
 
-[![https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh](https://raw.githubusercontent.com/tulios/json-viewer/master/tryitnow.png)](https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh)
+Since this is a community fork focused on security, we recommend installing the extension manually:
 
-### Or compile and load by yourself
-
-  1. It depends on node (version in `package.json` engines).
-  2. `npm install --global yarn`
-  2. `yarn install`
-  3. `yarn run build`
+  1. Clone this repository or download the source code
+  2. Install dependencies: `npm install`
+  3. Build the extension: `npm run build`
   4. Open Chrome and go to: chrome://extensions/
   5. Enable: "Developer mode"
   6. Click: "Load unpacked extension"
-  7. Select: "build/json_viewer" directory.
+  7. Select: "build/json_viewer" directory
+
+### Building from Source
+
+  1. Requires Node.js (see `package.json` for version requirements)
+  2. `npm install`
+  3. `npm run build`
+  4. The built extension will be in the `build/json_viewer` directory
 
 ## Try it on
 
@@ -74,6 +90,10 @@ Features:
 ### JSONP
 
   [http://freemusicarchive.org/api/get/curators.jsonp?api_key=60BLHNQCAOUFPIBZ&callback=test](http://freemusicarchive.org/api/get/curators.jsonp?api_key=60BLHNQCAOUFPIBZ&callback=test)
+
+## Contributing
+
+We welcome contributions from the community! Please feel free to submit issues and pull requests.
 
 ## License
 

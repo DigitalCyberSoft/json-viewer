@@ -1,20 +1,21 @@
-var path = require("path");
-var fs = require('fs-extra');
-var webpack = require("webpack");
-var Clean = require("clean-webpack-plugin");
-var BuildPaths = require("./lib/build-paths");
-var BuildExtension = require("./lib/build-extension-webpack-plugin");
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const path = require("path");
+const fs = require('fs-extra');
+const webpack = require("webpack");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const BuildPaths = require("./lib/build-paths");
+const BuildExtension = require("./lib/build-extension-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-var manifest = fs.readJSONSync(path.join(BuildPaths.SRC_ROOT, 'manifest.json'));
-var version = manifest.version;
+const manifest = fs.readJSONSync(path.join(BuildPaths.SRC_ROOT, 'manifest.json'));
+const version = manifest.version;
 
-var entries = {
+const entries = {
   viewer: ["./extension/src/viewer.js"],
   "viewer-alert": ["./extension/styles/viewer-alert.scss"],
   options: ["./extension/src/options.js"],
   backend: ["./extension/src/backend.js"],
   omnibox: ["./extension/src/omnibox.js"],
+  background: ["./extension/src/background.js"],
   "omnibox-page": ["./extension/src/omnibox-page.js"]
 };
 
@@ -34,9 +35,9 @@ function includeThemes(darkness, list) {
   });
 }
 
-var lightThemes = findThemes('light');
-var darkThemes = findThemes('dark');
-var themes = {light: lightThemes, dark: darkThemes};
+const lightThemes = findThemes('light');
+const darkThemes = findThemes('dark');
+const themes = {light: lightThemes, dark: darkThemes};
 
 includeThemes('light', lightThemes);
 includeThemes('dark', darkThemes);
@@ -45,32 +46,45 @@ console.log("Entries list:");
 console.log(entries);
 console.log("\n");
 
-var manifest = {
-  debug: false,
+const config = {
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   context: __dirname,
   entry: entries,
-  themes: themes,
   output: {
     path: path.join(__dirname, "build/json_viewer/assets"),
-    filename: "[name].js"
+    filename: "[name].js",
+    clean: true
   },
   module: {
-    loaders: [
-      {test: /\.(css|scss)$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")}
+    rules: [
+      {
+        test: /\.(css|scss)$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          "sass-loader"
+        ]
+      }
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.css', '.scss'],
-    root: path.resolve(__dirname, './extension'),
-  },
-  externals: [
-    {
-      "chrome-framework": "chrome"
+    extensions: ['.js', '.css', '.scss'],
+    modules: [
+      path.resolve(__dirname, './extension'),
+      'node_modules'
+    ],
+    alias: {
+      'chrome-framework': path.resolve(__dirname, './extension/src/chrome-framework.js')
     }
-  ],
+  },
+  externals: {
+    'chrome-framework': 'chrome'
+  },
   plugins: [
-    new Clean(["build"]),
-    new ExtractTextPlugin("[name].css", {allChunks: true}),
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: "[name].css"
+    }),
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
@@ -78,14 +92,11 @@ var manifest = {
         THEMES: JSON.stringify(themes)
       }
     }),
-    new BuildExtension()
-  ]
+    new BuildExtension({ themes })
+  ],
+  optimization: {
+    minimize: process.env.NODE_ENV === 'production'
+  }
 };
 
-if (process.env.NODE_ENV === 'production') {
-  manifest.plugins.push(new webpack.optimize.UglifyJsPlugin({sourceMap: false}));
-  manifest.plugins.push(new webpack.optimize.DedupePlugin());
-  manifest.plugins.push(new webpack.NoErrorsPlugin());
-}
-
-module.exports = manifest;
+module.exports = config;
