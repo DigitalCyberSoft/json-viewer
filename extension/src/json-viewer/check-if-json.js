@@ -71,12 +71,43 @@ function isJSONP(jsonStr) {
   return isJSON(extractJSON(jsonStr));
 }
 
+function isJSONL(text) {
+  if (!text || text.trim().length === 0) {
+    return false;
+  }
+
+  var lines = text.trim().split('\n');
+  
+  // JSONL must have at least one line
+  if (lines.length === 0) {
+    return false;
+  }
+
+  // Check if each non-empty line is valid JSON
+  var hasValidJSON = false;
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (line.length === 0) {
+      continue; // Skip empty lines
+    }
+    
+    try {
+      JSON.parse(line);
+      hasValidJSON = true;
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  return hasValidJSON;
+}
+
 function checkIfJson(sucessCallback, element) {
   var pre = element || getPreWithSource();
 
   if (pre !== null &&
     pre !== undefined &&
-    (isJSON(pre.textContent) || isJSONP(pre.textContent))) {
+    (isJSON(pre.textContent) || isJSONP(pre.textContent) || isJSONL(pre.textContent))) {
 
     sucessCallback(pre);
   } else if (bodyModified) {
@@ -86,5 +117,6 @@ function checkIfJson(sucessCallback, element) {
 
 module.exports = {
   checkIfJson: checkIfJson,
-  isJSON: isJSON
+  isJSON: isJSON,
+  isJSONL: isJSONL
 };

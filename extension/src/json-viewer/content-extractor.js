@@ -1,6 +1,7 @@
 var Promise = require('promise');
 var jsonFormater = require('./jsl-format');
 var extractJSON = require('./extract-json');
+var checkIfJson = require('./check-if-json');
 
 var TOKEN = (Math.random() + 1).toString(36).slice(2, 7);
 var WRAP_START = "<wrap_" + TOKEN + ">";
@@ -20,15 +21,33 @@ function contentExtractor(pre, options) {
   return new Promise(function(resolve, reject) {
     try {
       var rawJsonText = pre.textContent;
-      var jsonExtracted = extractJSON(rawJsonText);
-      var wrappedText = wrapNumbers(jsonExtracted);
+      var jsonExtracted;
+      var jsonParsed;
+      var decodedJson;
+      
+      // Check if it's JSONL format
+      if (checkIfJson.isJSONL(rawJsonText)) {
+        // Parse JSONL
+        jsonParsed = parseJSONL(rawJsonText);
+        jsonExtracted = rawJsonText;
+        
+        if (options.addons.sortKeys) jsonParsed = sortByKeys(jsonParsed);
+        
+        // For JSONL, stringify the array of objects
+        decodedJson = JSON.stringify(jsonParsed, null, 2);
+        
+      } else {
+        // Original JSON/JSONP handling
+        jsonExtracted = extractJSON(rawJsonText);
+        var wrappedText = wrapNumbers(jsonExtracted);
 
-      var jsonParsed = JSON.parse(wrappedText);
-      if (options.addons.sortKeys) jsonParsed = sortByKeys(jsonParsed);
+        jsonParsed = JSON.parse(wrappedText);
+        if (options.addons.sortKeys) jsonParsed = sortByKeys(jsonParsed);
 
-      // Validate and decode json
-      var decodedJson = JSON.stringify(jsonParsed);
-      decodedJson = decodedJson.replace(REPLACE_WRAP_REGEX, "$1");
+        // Validate and decode json
+        decodedJson = JSON.stringify(jsonParsed);
+        decodedJson = decodedJson.replace(REPLACE_WRAP_REGEX, "$1");
+      }
 
       var jsonFormatted = normalize(jsonFormater(decodedJson, options.structure));
       var jsonText = normalize(rawJsonText).replace(normalize(jsonExtracted), jsonFormatted);
@@ -115,6 +134,27 @@ function wrapNumbers(text) {
   }
 
   return buffer;
+}
+
+function parseJSONL(text) {
+  var lines = text.trim().split('\n');
+  var objects = [];
+  
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (line.length === 0) {
+      continue;
+    }
+    
+    try {
+      var obj = JSON.parse(line);
+      objects.push(obj);
+    } catch (e) {
+      throw new Error('Invalid JSON at line ' + (i + 1) + ': ' + e.message);
+    }
+  }
+  
+  return objects;
 }
 
 function isCharInNumber(char, previous) {
