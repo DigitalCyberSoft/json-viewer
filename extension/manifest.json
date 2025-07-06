@@ -3,8 +3,8 @@
   "version": "0.20.0",
   "manifest_version": 3,
   "author": "Tulio Ornelas <ornelas.tulio@gmail.com>",
-  "description": "The most beautiful and customizable JSON/JSONP highlighter that your eyes have ever seen. Open source at https://goo.gl/fmphc7",
-  "homepage_url": "https://github.com/tulios/json-viewer",
+  "description": "Enhanced JSON/JSONP highlighter with auto dark mode and advanced features. Fork of tulios/json-viewer.",
+  "homepage_url": "https://github.com/DigitalCyberSoft/json-viewer",
   "minimum_chrome_version": "88",
   "icons": {
        "128": "icons/128.png",
