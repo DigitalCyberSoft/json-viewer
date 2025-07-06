@@ -25,49 +25,103 @@ Notes:
 * Sometimes when the plugin updates chrome leaves the old background process running and revokes some options, like the access to local files. When this happen just recheck the option that everything will work again
 * Works on local files (if you enable this in chrome://extensions)
 
-Features:
+## Features
 
-* Syntax highlighting
-* 27 built-in themes
-* Collapsible nodes
-* Clickable URLs (optional)
-* URL does not matter (the content is analysed to determine if its a JSON or not)
-* Inspect your json typing "json" in the console
-* Hot word `json-viewer` into omnibox (type `json-viewer` + TAB and paste your JSON into omnibox, hit ENTER and it will be highlighted)
-* Toggle button to view the raw/highlighted version
+### 🎨 **Visual & Themes**
+* Modern gradient icon design with data visualization elements
+* 29 built-in themes including new **Gruvbox** and **Synthwave84** themes
+* Automatic dark mode detection
+* Customizable themes and tab sizes
+* Syntax highlighting with collapsible nodes
+
+### 🔍 **Advanced Filtering & Search**
+* **JSONPath filtering** with `$.path` syntax support
+* **Key-based filtering** - filter by specific object keys
+* **Value-based filtering** - search for specific values
+* Toggle-able filter panel with real-time results
+
+### 📊 **Data Analysis**
+* **Object/Key/Array counter** with vertical display
+* Real-time count updates when filtering
+* Click for detailed breakdown dialog
+* Performance optimizations for large files
+
+### 📋 **Enhanced Copy Functionality**
+* Copy as formatted JSON, compact JSON, CSV, or URL parameters
+* Multiple export formats with visual feedback
+* Smart clipboard integration
+
+### 🌐 **Advanced Capabilities**
+* **Iframe support** with user controls (`processIframes` setting)
+* **UTF-8 encoding** reload for international content
+* Clickable URLs with customizable behavior
 * Works with numbers bigger than Number.MAX_VALUE
-* Option to show line numbers
-* Option to customize your theme
-* Option to customize the tab size
-* Option to configure a max JSON size to highlight
-* Option to collapse nodes from second level + Button to unfold all collapsed nodes
-* Option to include a header with timestamp + url
-* Option to allow the edition of the loaded JSON
-* Option to sort json by keys
-* Option to disable auto highlight
-* Option for C-style braces and arrays
-* Scratch pad, a new area which you can type/paste JSON and format indefinitely using a button or key shortcut. To access type `json-viewer` + `TAB` + `scratch pad` ENTER
+* JSONL (JSON Lines) format support
+
+### ⚡ **Performance & Usability**
+* Smart content-type detection
+* Optimized JSON parsing and validation
+* Enhanced keyboard navigation (browser back/forward compatible)
+* Left-click only URL handling
+* Toggle button for raw/highlighted view
+* Line number display options
+
+### 🛠 **Developer Features**
+* Inspect JSON by typing "json" in console
+* Omnibox integration (`json-viewer` + TAB)
+* Scratch pad for formatting JSON on-demand
+* Option to edit loaded JSON
+* Sort JSON by keys
+* Configurable auto-highlight
+* C-style braces and arrays support
+* Header with timestamp and URL
 
 ## Installation
 
-### Manual Installation (Recommended)
+### Quick Install (Recommended)
 
-Since this is a community fork focused on security, we recommend installing the extension manually:
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/DigitalCyberSoft/json-viewer.git
+   cd json-viewer
+   ```
 
-  1. Clone this repository or download the source code
-  2. Install dependencies: `npm install`
-  3. Build the extension: `npm run build`
-  4. Open Chrome and go to: chrome://extensions/
-  5. Enable: "Developer mode"
-  6. Click: "Load unpacked extension"
-  7. Select: "build/json_viewer" directory
+2. **Install dependencies and build:**
+   ```bash
+   npm install
+   npm run release
+   ```
 
-### Building from Source
+3. **Install in Chrome:**
+   - Open Chrome and go to: `chrome://extensions/`
+   - Enable "Developer mode" (toggle in top right)
+   - Click "Load unpacked"
+   - Select the `build/json_viewer` directory
 
-  1. Requires Node.js (see `package.json` for version requirements)
-  2. `npm install`
-  3. `npm run build`
-  4. The built extension will be in the `build/json_viewer` directory
+### Alternative: Download Release
+
+1. **Download pre-built extension:**
+   - Go to [Releases](https://github.com/DigitalCyberSoft/json-viewer/releases)
+   - Download the latest `json_viewer_v*.zip`
+   - Extract the zip file
+
+2. **Install in Chrome:**
+   - Open Chrome: `chrome://extensions/`
+   - Enable "Developer mode"
+   - Click "Load unpacked"
+   - Select the extracted folder
+
+### Development Build
+
+For development/testing only:
+```bash
+git clone https://github.com/DigitalCyberSoft/json-viewer.git
+cd json-viewer
+npm install
+npm run build  # Development build
+```
+
+**Note:** Use `npm run release` for production builds, `npm run build` for development.
 
 ## Try it on
 
