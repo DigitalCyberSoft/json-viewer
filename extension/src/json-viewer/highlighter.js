@@ -13,11 +13,22 @@ var defaults = require('./options/defaults');
 var URL_PATTERN = require('./url-pattern');
 var F_LETTER = 70;
 
+function resolveTheme(theme) {
+  if (theme === 'auto') {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return prefersDark ? 'cobalt' : 'default';
+    }
+    return 'default'; // Fallback if matchMedia not available
+  }
+  return theme;
+}
+
 function Highlighter(jsonText, options) {
   this.options = options || {};
   this.text = jsonText;
   this.defaultSearch = false;
-  this.theme = this.options.theme || "default";
+  this.theme = resolveTheme(this.options.theme || "default");
   this.theme = this.theme.replace(/_/, ' ');
 }
 

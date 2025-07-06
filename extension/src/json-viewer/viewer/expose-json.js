@@ -1,13 +1,14 @@
 function exposeJson(text, outsideViewer) {
   console.info("[JSONViewer] Your json was stored into 'window.json', enjoy!");
 
-  if (outsideViewer) {
+  // Always use direct assignment instead of script injection
+  // This is CSP-compliant and works in both cases
+  try {
     window.json = JSON.parse(text);
-
-  } else {
-    var script = document.createElement("script") ;
-    script.innerHTML = 'window.json = ' + text + ';';
-    document.head.appendChild(script);
+  } catch (e) {
+    console.warn("[JSONViewer] Failed to parse JSON for window.json:", e);
+    // Fallback: expose the raw text
+    window.json = text;
   }
 }
 

@@ -14,7 +14,7 @@ function renderExtras(pre, options, highlighter) {
 
   var optionsLink = document.createElement("a");
   optionsLink.className = "json_viewer icon gear";
-  optionsLink.href = chrome.extension.getURL("/pages/options.html");
+  optionsLink.href = chrome.runtime.getURL("/pages/options.html");
   optionsLink.target = "_blank";
   optionsLink.title = "Options";
   optionsLink.innerHTML = svgGear;
@@ -24,7 +24,7 @@ function renderExtras(pre, options, highlighter) {
   rawLink.href = "#";
   rawLink.title = "Original JSON toggle";
   rawLink.innerHTML = svgRaw;
-  rawLink.onclick = function(e) {
+  rawLink.addEventListener('click', function(e) {
     e.preventDefault();
     var editor = document.getElementsByClassName('CodeMirror')[0];
 
@@ -40,14 +40,14 @@ function renderExtras(pre, options, highlighter) {
       pre.hidden = true;
       extras.className = extras.className.replace(/\s+auto-highlight-off/, '');
     }
-  }
+  });
 
   var unfoldLink = document.createElement("a");
   unfoldLink.className = "json_viewer icon unfold";
   unfoldLink.href = "#";
   unfoldLink.title = "Fold/Unfold all toggle";
   unfoldLink.innerHTML = svgUnfold;
-  unfoldLink.onclick = function(e) {
+  unfoldLink.addEventListener('click', function(e) {
     e.preventDefault();
     var value = pre.getAttribute('data-folded')
 
@@ -59,7 +59,7 @@ function renderExtras(pre, options, highlighter) {
       highlighter.fold();
       pre.setAttribute('data-folded', true)
     }
-  }
+  });
 
   var copyLink = document.createElement("a");
   copyLink.className = "json_viewer icon copy";
@@ -85,28 +85,44 @@ function renderExtras(pre, options, highlighter) {
     menuItem.href = "#";
     menuItem.style.cssText = "display:block;padding:8px 16px;color:#333;text-decoration:none;font-size:12px;font-family:monospace;";
     menuItem.innerHTML = option.text;
-    menuItem.onmouseover = function() { this.style.backgroundColor = "#f0f0f0"; };
-    menuItem.onmouseout = function() { this.style.backgroundColor = "transparent"; };
-    menuItem.onclick = function(e) {
+    
+    menuItem.addEventListener('mouseover', function() { 
+      this.style.backgroundColor = "#f0f0f0"; 
+    });
+    menuItem.addEventListener('mouseout', function() { 
+      this.style.backgroundColor = "transparent"; 
+    });
+    menuItem.addEventListener('click', function(e) {
       e.preventDefault();
       copyMenu.style.display = "none";
       copyWithFormat(pre, option.format, copyLink);
-    };
+    });
+    
     copyMenu.appendChild(menuItem);
   });
   
   document.body.appendChild(copyMenu);
   
-  copyLink.onclick = function(e) {
+  copyLink.addEventListener('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
     
     // Position menu below the copy icon
     var rect = copyLink.getBoundingClientRect();
-    copyMenu.style.left = rect.left + "px";
+    var menuWidth = 200; // Approximate menu width
+    var viewportWidth = window.innerWidth;
+    
+    // Check if menu would go off-screen on the right
+    var leftPosition = rect.left;
+    if (rect.left + menuWidth > viewportWidth) {
+      // Position menu to the left of the button instead
+      leftPosition = rect.right - menuWidth;
+    }
+    
+    copyMenu.style.left = leftPosition + "px";
     copyMenu.style.top = (rect.bottom + 5) + "px";
     copyMenu.style.display = copyMenu.style.display === "none" ? "block" : "none";
-  };
+  });
   
   // Close menu when clicking elsewhere
   document.addEventListener("click", function(e) {

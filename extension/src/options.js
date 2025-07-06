@@ -35,26 +35,26 @@ function renderVersion() {
 }
 
 function onLoaded() {
-  var currentOptions = Storage.load();
+  Storage.loadAsync(function(currentOptions) {
+    renderVersion();
+    renderThemeList(CodeMirror, currentOptions.theme);
+    var addonsEditor = renderAddons(CodeMirror, currentOptions.addons);
+    var structureEditor = renderStructure(CodeMirror, currentOptions.structure);
+    var styleEditor = renderStyle(CodeMirror, currentOptions.style);
 
-  renderVersion();
-  renderThemeList(CodeMirror, currentOptions.theme);
-  var addonsEditor = renderAddons(CodeMirror, currentOptions.addons);
-  var structureEditor = renderStructure(CodeMirror, currentOptions.structure);
-  var styleEditor = renderStyle(CodeMirror, currentOptions.style);
+    bindResetButton();
+    bindSaveButton([addonsEditor, structureEditor, styleEditor], function(options) {
+      if (!isValidJSON(options.addons)) {
+        sweetAlert("Ops!", "\"Add-ons\" isn't a valid JSON", "error");
 
-  bindResetButton();
-  bindSaveButton([addonsEditor, structureEditor, styleEditor], function(options) {
-    if (!isValidJSON(options.addons)) {
-      sweetAlert("Ops!", "\"Add-ons\" isn't a valid JSON", "error");
+      } else if (!isValidJSON(options.structure)) {
+        sweetAlert("Ops!", "\"Structure\" isn't a valid JSON", "error");
 
-    } else if (!isValidJSON(options.structure)) {
-      sweetAlert("Ops!", "\"Structure\" isn't a valid JSON", "error");
-
-    } else {
-      Storage.save(options);
-      sweetAlert("Success", "Options saved!", "success");
-    }
+      } else {
+        Storage.save(options);
+        sweetAlert("Success", "Options saved!", "success");
+      }
+    });
   });
 }
 

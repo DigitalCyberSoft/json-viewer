@@ -106,10 +106,8 @@ function highlightContent(pre, outsideViewer, ignoreLimit) {
       });
 
   }).catch(function(e) {
+    console.error('[JSONViewer] Error in highlightContent:', e.message, e);
     pre.hidden = false;
-    if (process.env.NODE_ENV === 'development') {
-      console.error('[JSONViewer] error: ' + e.message, e);
-    }
   });
 }
 

@@ -27,18 +27,31 @@ function onThemeChange(input, editor) {
     document.head.removeChild(currentLinkTag);
   }
 
-  var themeToLoad = {
-    id: "selected-theme",
-    path: "themes/" + themeDarkness(selectedTheme) + "/" + selectedTheme + ".css",
-    checkClass: "theme-" + selectedTheme + "-css-check"
-  };
+  // Handle auto theme by resolving to appropriate theme
+  var resolvedTheme = selectedTheme;
+  if (selectedTheme === "auto") {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      resolvedTheme = prefersDark ? 'cobalt' : 'default';
+    } else {
+      resolvedTheme = 'default';
+    }
+  }
 
-  if (selectedTheme === "default") {
+  if (resolvedTheme === "default") {
     editor.setOption("theme", themeOption);
 
   } else {
+    var themeToLoad = {
+      id: "selected-theme",
+      path: "themes/" + themeDarkness(resolvedTheme) + "/" + resolvedTheme + ".css",
+      checkClass: "theme-" + resolvedTheme + "-css-check"
+    };
+    
     loadCss(themeToLoad).then(function() {
-      editor.setOption("theme", themeOption);
+      // For auto theme, use the resolved theme for the editor
+      var editorTheme = selectedTheme === "auto" ? resolvedTheme : themeOption;
+      editor.setOption("theme", editorTheme);
     });
   }
 }
@@ -58,17 +71,18 @@ function renderThemeList(CodeMirror, value) {
     gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
   });
 
-  themes.onchange = function() {
+  themesInput.onchange = function() {
     onThemeChange(themesInput, themeEditor);
   }
 
   var optionSelected = value;
+  themesInput.appendChild(createOption("auto", optionSelected));
   themesInput.appendChild(createOption(themeDefault, optionSelected));
   themesInput.appendChild(createThemeGroup("Light", themesList.light, optionSelected));
   themesInput.appendChild(createThemeGroup("Dark", themesList.dark, optionSelected));
 
   if (optionSelected && optionSelected !== "default") {
-    themes.onchange();
+    onThemeChange(themesInput, themeEditor);
   }
 }
 

@@ -1,0 +1,26 @@
+{
+  "name": "JSON Viewer Test",
+  "version": "1.0.0",
+  "features": [
+    "JSON highlighting",
+    "JSONL support",
+    "Copy functionality"
+  ],
+  "config": {
+    "theme": "dark",
+    "autoHighlight": true,
+    "maxSize": 1024
+  },
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "email": "alice@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "email": "bob@example.com"
+    }
+  ]
+}

@@ -3,47 +3,42 @@ var chrome = require("chrome-framework");
 var MAX_WAIT = 20;
 
 function loadCSS(opts) {
-  var url = chrome.extension.getURL(opts.path);
+  var url = chrome.runtime.getURL(opts.path);
 
-  var link = document.createElement("link");
-  var sheets = document.styleSheets;
-  link.rel = "stylesheet";
-  link.href = url;
-  if (opts.id) link.id = opts.id;
-
-  document.head.appendChild(link);
-
-  var checkElement = document.createElement("div");
-  checkElement.setAttribute("class", opts.checkClass);
-  document.body.appendChild(checkElement);
-
-  var scheduleId = null;
-  var attempts = 0;
-
+  // Try to fetch the CSS content and inject it as a style element
   return new Promise(function(resolve, reject) {
-    function scheduleCheck() {
-      var content = window.
-        getComputedStyle(checkElement, ":before").
-        getPropertyValue("content");
-
-      if (attempts > MAX_WAIT) {
-        return reject(
-          Error("fail to load css: '" + url + "', content loaded: " + content)
-        );
-      }
-
-      if (/loaded/.test(content)) {
-        cancelAnimationFrame(scheduleId);
-        document.body.removeChild(checkElement);
+    fetch(url)
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('Failed to fetch CSS: ' + response.status);
+        }
+        return response.text();
+      })
+      .then(function(cssText) {
+        var style = document.createElement("style");
+        style.type = "text/css";
+        if (opts.id) style.id = opts.id;
+        style.textContent = cssText;
+        
+        // Try to append to head, fallback to body if CSP blocks it
+        try {
+          document.head.appendChild(style);
+        } catch (e) {
+          console.warn('[JSONViewer] CSP blocked head injection, trying body:', e);
+          try {
+            document.body.appendChild(style);
+          } catch (e2) {
+            console.error('[JSONViewer] Failed to inject CSS:', e2);
+            return reject(e2);
+          }
+        }
+        
         resolve();
-
-      } else {
-        attempts++;
-        scheduleId = requestAnimationFrame(scheduleCheck, 1);
-      }
-    }
-
-    scheduleCheck();
+      })
+      .catch(function(error) {
+        console.error('[JSONViewer] Failed to load CSS:', error);
+        reject(error);
+      });
   });
 }
 
