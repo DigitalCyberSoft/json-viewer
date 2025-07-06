@@ -1,0 +1,302 @@
+/* Gruvbox Dark Theme for JSON Viewer */
+/* Based on the popular Gruvbox color scheme by morhetz */
+
+.cm-s-gruvbox.CodeMirror {
+  background: #282828;
+  color: #ebdbb2;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.cm-s-gruvbox .CodeMirror-lines {
+  padding: 4px 0;
+}
+
+.cm-s-gruvbox .CodeMirror-line-numbers {
+  background: #3c3836;
+  color: #928374;
+  border-right: 1px solid #504945;
+}
+
+.cm-s-gruvbox .CodeMirror-gutters {
+  background: #3c3836;
+  border-right: 1px solid #504945;
+}
+
+.cm-s-gruvbox .CodeMirror-cursor {
+  border-left: 2px solid #ebdbb2;
+}
+
+/* JSON syntax highlighting */
+.cm-s-gruvbox .cm-property {
+  color: #83a598; /* blue */
+}
+
+.cm-s-gruvbox .cm-string {
+  color: #b8bb26; /* green */
+}
+
+.cm-s-gruvbox .cm-number {
+  color: #d3869b; /* purple */
+}
+
+.cm-s-gruvbox .cm-atom {
+  color: #fe8019; /* orange */
+}
+
+.cm-s-gruvbox .cm-keyword {
+  color: #fb4934; /* red */
+}
+
+.cm-s-gruvbox .cm-variable {
+  color: #ebdbb2; /* fg */
+}
+
+.cm-s-gruvbox .cm-variable-2 {
+  color: #fabd2f; /* yellow */
+}
+
+.cm-s-gruvbox .cm-comment {
+  color: #928374; /* gray */
+  font-style: italic;
+}
+
+.cm-s-gruvbox .cm-operator {
+  color: #8ec07c; /* aqua */
+}
+
+.cm-s-gruvbox .cm-bracket {
+  color: #ebdbb2; /* fg */
+}
+
+/* Selection */
+.cm-s-gruvbox .CodeMirror-selected {
+  background: #504945; /* bg2 */
+}
+
+.cm-s-gruvbox .CodeMirror-focused .CodeMirror-selected {
+  background: #665c54; /* bg3 */
+}
+
+/* Line highlighting */
+.cm-s-gruvbox .CodeMirror-activeline-background {
+  background: #32302f; /* bg1 */
+}
+
+/* Matching brackets */
+.cm-s-gruvbox .CodeMirror-matchingbracket {
+  color: #fe8019; /* orange */
+  background: #504945; /* bg2 */
+  font-weight: bold;
+}
+
+/* Folding */
+.cm-s-gruvbox .CodeMirror-foldmarker {
+  color: #fabd2f; /* yellow */
+  text-shadow: none;
+  font-family: arial;
+  line-height: .3;
+  cursor: pointer;
+}
+
+.cm-s-gruvbox .CodeMirror-foldgutter {
+  width: 12px;
+}
+
+.cm-s-gruvbox .CodeMirror-foldgutter-open,
+.cm-s-gruvbox .CodeMirror-foldgutter-folded {
+  cursor: pointer;
+}
+
+.cm-s-gruvbox .CodeMirror-foldgutter-open:after {
+  content: "▼";
+  color: #928374; /* gray */
+}
+
+.cm-s-gruvbox .CodeMirror-foldgutter-folded:after {
+  content: "▶";
+  color: #928374; /* gray */
+}
+
+/* Search highlighting */
+.cm-s-gruvbox .cm-searching {
+  background: rgba(250, 189, 47, 0.4); /* yellow with opacity */
+}
+
+/* URL links */
+.cm-s-gruvbox .cm-string-link {
+  color: #8ec07c; /* aqua */
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.cm-s-gruvbox .cm-string-link:hover {
+  color: #b8bb26; /* green */
+}
+
+/* JSON Viewer specific styling */
+.theme-gruvbox-css-check:before {
+  content: 'loaded';
+  display: none;
+}
+
+/* Extras toolbar styling */
+.extras {
+  background: #3c3836; /* bg1 */
+  border-bottom: 2px solid #665c54; /* bg3 */
+  
+  .icon {
+    background: #504945; /* bg2 */
+    border: 1px solid #665c54; /* bg3 */
+    
+    svg {
+      fill: #ebdbb2; /* fg */
+    }
+
+    &:hover {
+      background: #665c54; /* bg3 */
+      border-color: #928374; /* gray */
+    }
+  }
+  
+  /* Filter toggle button */
+  .jsonpath-toggle {
+    background: #504945 !important; /* bg2 */
+    color: #ebdbb2 !important; /* fg */
+    border: 1px solid #665c54 !important; /* bg3 */
+    
+    &:hover {
+      background: #665c54 !important; /* bg3 */
+      border-color: #83a598 !important; /* blue */
+    }
+  }
+  
+  /* Object count display */
+  .object-count {
+    background: #32302f !important; /* bg1 */
+    color: #928374 !important; /* gray */
+    border: 1px solid #504945 !important; /* bg2 */
+  }
+}
+
+/* Filter container styling */
+.jsonpath-container {
+  background: #3c3836; /* bg1 */
+  border: 1px solid #665c54; /* bg3 */
+  border-radius: 5px;
+  padding: 10px;
+  
+  label {
+    color: #fabd2f !important; /* yellow */
+  }
+  
+  select {
+    background: #282828 !important; /* bg */
+    border: 1px solid #504945 !important; /* bg2 */
+    color: #ebdbb2 !important; /* fg */
+    
+    &:focus {
+      outline: none !important;
+      border-color: #83a598 !important; /* blue */
+    }
+  }
+  
+  input {
+    background: #282828 !important; /* bg */
+    border: 1px solid #504945 !important; /* bg2 */
+    color: #b8bb26 !important; /* green */
+    
+    &:focus {
+      outline: none !important;
+      border-color: #83a598 !important; /* blue */
+    }
+    
+    &::placeholder {
+      color: #928374 !important; /* gray */
+    }
+  }
+  
+  button {
+    background: #504945 !important; /* bg2 */
+    color: #ebdbb2 !important; /* fg */
+    border: 1px solid #665c54 !important; /* bg3 */
+    
+    &:hover {
+      background: #665c54 !important; /* bg3 */
+      border-color: #83a598 !important; /* blue */
+    }
+    
+    &:active {
+      background: #7c6f64 !important; /* bg4 */
+    }
+  }
+  
+  .jsonpath-apply {
+    background: #98971a !important; /* green dark */
+    border-color: #b8bb26 !important; /* green */
+    
+    &:hover {
+      background: #b8bb26 !important; /* green */
+      color: #282828 !important; /* bg */
+    }
+  }
+  
+  .jsonpath-clear {
+    background: #cc241d !important; /* red dark */
+    border-color: #fb4934 !important; /* red */
+    
+    &:hover {
+      background: #fb4934 !important; /* red */
+      color: #282828 !important; /* bg */
+    }
+  }
+}
+
+/* Copy menu styling */
+.copy-menu {
+  background: #282828 !important; /* bg */
+  border: 1px solid #504945 !important; /* bg2 */
+  box-shadow: 0 5px 20px rgba(40, 40, 40, 0.8) !important;
+  
+  a {
+    color: #ebdbb2 !important; /* fg */
+    
+    &:hover {
+      background: #504945 !important; /* bg2 */
+      color: #b8bb26 !important; /* green */
+    }
+  }
+}
+
+/* Body background for consistency */
+body:has(.cm-s-gruvbox) {
+  background: #282828; /* bg */
+}
+
+/* Scrollbar styling */
+.cm-s-gruvbox .CodeMirror-scrollbar-filler,
+.cm-s-gruvbox .CodeMirror-vscrollbar,
+.cm-s-gruvbox .CodeMirror-hscrollbar {
+  background: #282828; /* bg */
+}
+
+.cm-s-gruvbox .CodeMirror-vscrollbar::-webkit-scrollbar,
+.cm-s-gruvbox .CodeMirror-hscrollbar::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.cm-s-gruvbox .CodeMirror-vscrollbar::-webkit-scrollbar-track,
+.cm-s-gruvbox .CodeMirror-hscrollbar::-webkit-scrollbar-track {
+  background: #3c3836; /* bg1 */
+}
+
+.cm-s-gruvbox .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
+.cm-s-gruvbox .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
+  background: #665c54; /* bg3 */
+  border-radius: 6px;
+}
+
+.cm-s-gruvbox .CodeMirror-vscrollbar::-webkit-scrollbar-thumb:hover,
+.cm-s-gruvbox .CodeMirror-hscrollbar::-webkit-scrollbar-thumb:hover {
+  background: #928374; /* gray */
+}

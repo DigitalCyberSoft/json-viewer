@@ -7,28 +7,30 @@
   "private": true,
   "dependencies": {
     "archiver": "^7.0.1",
-    "codemirror": "^5.65.16",
-    "fs-extra": "^11.2.0",
+    "codemirror": "^5.65.19",
+    "fs-extra": "^11.3.0",
+    "jsonpath": "^1.1.1",
     "mousetrap": "^1.6.5",
     "promise": "^8.3.0",
     "sweetalert": "^2.1.2"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
-    "css-loader": "^6.10.0",
-    "jest": "^29.7.0",
-    "mini-css-extract-plugin": "^2.8.0",
-    "puppeteer": "^23.0.0",
+    "css-loader": "^7.1.2",
+    "jest": "^30.0.4",
+    "mini-css-extract-plugin": "^2.9.2",
+    "puppeteer": "^24.11.2",
     "sass": "^1.71.0",
-    "sass-loader": "^14.1.0",
-    "style-loader": "^3.3.4",
-    "webpack": "^5.90.1",
-    "webpack-cli": "^5.1.4"
+    "sass-loader": "^16.0.5",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1"
   },
   "scripts": {
     "release": "NODE_ENV=production npm run build",
     "build": "webpack --progress && node ./lib/release-script",
-    "test": "jest",
-    "test:extension": "node tests/extension.test.js"
+    "test": "npm run build && jest",
+    "test:unit": "jest --testPathIgnorePatterns=tests/extension.test.js",
+    "test:extension": "npm run build && node tests/extension.test.js"
   }
 }

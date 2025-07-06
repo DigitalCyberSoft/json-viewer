@@ -1,0 +1,310 @@
+/* Synthwave84 Theme for JSON Viewer */
+/* Based on the popular Synthwave84 VS Code theme */
+
+.cm-s-synthwave84.CodeMirror {
+  background: #2a2139;
+  color: #f2f2f2;
+  font-family: 'Fira Code', 'Operator Mono', 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.cm-s-synthwave84 .CodeMirror-lines {
+  padding: 4px 0;
+}
+
+.cm-s-synthwave84 .CodeMirror-line-numbers {
+  background: #241b2f;
+  border-right: 1px solid #ff006e;
+}
+
+.cm-s-synthwave84 .CodeMirror-gutters {
+  background: #241b2f;
+  border-right: 1px solid #ff006e;
+  box-shadow: inset -1px 0 0 0 #ff006e;
+}
+
+.cm-s-synthwave84 .CodeMirror-cursor {
+  border-left: 2px solid #ff7edb;
+  animation: synthwave-glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes synthwave-glow {
+  from { box-shadow: 0 0 5px #ff7edb; }
+  to { box-shadow: 0 0 10px #ff7edb, 0 0 15px #ff7edb; }
+}
+
+/* JSON syntax highlighting */
+.cm-s-synthwave84 .cm-property {
+  color: #ff7edb;
+  text-shadow: 0 0 2px #ff7edb;
+}
+
+.cm-s-synthwave84 .cm-string {
+  color: #36f9f6;
+  text-shadow: 0 0 2px #36f9f6;
+}
+
+.cm-s-synthwave84 .cm-number {
+  color: #ff8c00;
+  text-shadow: 0 0 2px #ff8c00;
+}
+
+.cm-s-synthwave84 .cm-atom {
+  color: #ff006e;
+  text-shadow: 0 0 2px #ff006e;
+}
+
+.cm-s-synthwave84 .cm-keyword {
+  color: #fe4450;
+  text-shadow: 0 0 2px #fe4450;
+}
+
+.cm-s-synthwave84 .cm-variable {
+  color: #f2f2f2;
+}
+
+.cm-s-synthwave84 .cm-variable-2 {
+  color: #72f1b8;
+  text-shadow: 0 0 2px #72f1b8;
+}
+
+.cm-s-synthwave84 .cm-comment {
+  color: #848bbd;
+  font-style: italic;
+}
+
+.cm-s-synthwave84 .cm-operator {
+  color: #ff006e;
+}
+
+.cm-s-synthwave84 .cm-bracket {
+  color: #f2f2f2;
+}
+
+/* Selection */
+.cm-s-synthwave84 .CodeMirror-selected {
+  background: rgba(255, 0, 110, 0.2);
+}
+
+.cm-s-synthwave84 .CodeMirror-focused .CodeMirror-selected {
+  background: rgba(255, 0, 110, 0.3);
+}
+
+/* Line highlighting */
+.cm-s-synthwave84 .CodeMirror-activeline-background {
+  background: rgba(255, 126, 219, 0.1);
+}
+
+/* Matching brackets */
+.cm-s-synthwave84 .CodeMirror-matchingbracket {
+  color: #ff7edb;
+  background: rgba(255, 126, 219, 0.2);
+  text-shadow: 0 0 5px #ff7edb;
+}
+
+/* Folding */
+.cm-s-synthwave84 .CodeMirror-foldmarker {
+  color: #ff006e;
+  text-shadow: 0 0 2px #ff006e;
+  font-family: arial;
+  line-height: .3;
+  cursor: pointer;
+}
+
+.cm-s-synthwave84 .CodeMirror-foldgutter {
+  width: 12px;
+}
+
+.cm-s-synthwave84 .CodeMirror-foldgutter-open,
+.cm-s-synthwave84 .CodeMirror-foldgutter-folded {
+  cursor: pointer;
+}
+
+.cm-s-synthwave84 .CodeMirror-foldgutter-open:after {
+  content: "▼";
+  color: #ff006e;
+  text-shadow: 0 0 2px #ff006e;
+}
+
+.cm-s-synthwave84 .CodeMirror-foldgutter-folded:after {
+  content: "▶";
+  color: #ff006e;
+  text-shadow: 0 0 2px #ff006e;
+}
+
+/* Search highlighting */
+.cm-s-synthwave84 .cm-searching {
+  background: rgba(255, 255, 0, 0.4);
+}
+
+/* URL links */
+.cm-s-synthwave84 .cm-string-link {
+  color: #72f1b8;
+  text-decoration: underline;
+  text-shadow: 0 0 2px #72f1b8;
+  cursor: pointer;
+}
+
+.cm-s-synthwave84 .cm-string-link:hover {
+  color: #36f9f6;
+  text-shadow: 0 0 5px #36f9f6;
+}
+
+/* JSON Viewer specific styling */
+.theme-synthwave84-css-check:before {
+  content: 'loaded';
+  display: none;
+}
+
+/* Extras toolbar styling */
+.extras {
+  background: linear-gradient(45deg, #2a2139, #241b2f);
+  border-bottom: 2px solid #ff006e;
+  box-shadow: 0 2px 10px rgba(255, 0, 110, 0.3);
+  
+  .icon {
+    background: rgba(255, 126, 219, 0.1);
+    border: 1px solid rgba(255, 126, 219, 0.3);
+    
+    svg {
+      fill: #ff7edb;
+      filter: drop-shadow(0 0 2px #ff7edb);
+    }
+
+    &:hover {
+      background: rgba(255, 126, 219, 0.2);
+      box-shadow: 0 0 10px rgba(255, 126, 219, 0.5);
+      transform: translateY(-1px);
+      transition: all 0.2s ease;
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  /* JSONPath toggle button */
+  .jsonpath-toggle {
+    background: linear-gradient(45deg, #ff006e, #fe4450) !important;
+    color: white !important;
+    border: 1px solid #ff7edb !important;
+    text-shadow: 0 0 2px rgba(255, 126, 219, 0.8) !important;
+    box-shadow: 0 0 5px rgba(255, 0, 110, 0.5) !important;
+    
+    &:hover {
+      box-shadow: 0 0 15px rgba(255, 0, 110, 0.8) !important;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+/* JSONPath container styling */
+.jsonpath-container {
+  background: linear-gradient(45deg, #2a2139, #241b2f);
+  border: 1px solid #ff006e;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(255, 0, 110, 0.3);
+  
+  label {
+    color: #ff7edb !important;
+    text-shadow: 0 0 2px #ff7edb !important;
+  }
+  
+  input {
+    background: #1a1625 !important;
+    border: 1px solid #ff006e !important;
+    color: #36f9f6 !important;
+    text-shadow: 0 0 1px #36f9f6 !important;
+    
+    &:focus {
+      outline: none !important;
+      border-color: #ff7edb !important;
+      box-shadow: 0 0 10px rgba(255, 126, 219, 0.5) !important;
+    }
+    
+    &::placeholder {
+      color: #848bbd !important;
+    }
+  }
+  
+  button {
+    background: linear-gradient(45deg, #ff006e, #fe4450) !important;
+    color: white !important;
+    border: 1px solid #ff7edb !important;
+    text-shadow: 0 0 2px rgba(255, 126, 219, 0.8) !important;
+    box-shadow: 0 0 5px rgba(255, 0, 110, 0.5) !important;
+    
+    &:hover {
+      box-shadow: 0 0 15px rgba(255, 0, 110, 0.8) !important;
+      transform: translateY(-1px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  .jsonpath-clear {
+    background: linear-gradient(45deg, #848bbd, #6b73a8) !important;
+    
+    &:hover {
+      box-shadow: 0 0 15px rgba(132, 139, 189, 0.8) !important;
+    }
+  }
+}
+
+/* Copy menu styling */
+.copy-menu {
+  background: #2a2139 !important;
+  border: 1px solid #ff006e !important;
+  box-shadow: 0 5px 20px rgba(255, 0, 110, 0.5) !important;
+  
+  a {
+    color: #f2f2f2 !important;
+    
+    &:hover {
+      background: rgba(255, 126, 219, 0.2) !important;
+      text-shadow: 0 0 2px #ff7edb !important;
+    }
+  }
+}
+
+/* Body background for full immersion */
+body:has(.cm-s-synthwave84) {
+  background: linear-gradient(135deg, #2a2139 0%, #1a1625 50%, #241b2f 100%);
+  min-height: 100vh;
+}
+
+/* Scrollbar styling */
+.cm-s-synthwave84 .CodeMirror-scrollbar-filler {
+  background: #2a2139;
+}
+
+.cm-s-synthwave84 .CodeMirror-vscrollbar,
+.cm-s-synthwave84 .CodeMirror-hscrollbar {
+  background: #2a2139;
+}
+
+.cm-s-synthwave84 .CodeMirror-vscrollbar::-webkit-scrollbar,
+.cm-s-synthwave84 .CodeMirror-hscrollbar::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.cm-s-synthwave84 .CodeMirror-vscrollbar::-webkit-scrollbar-track,
+.cm-s-synthwave84 .CodeMirror-hscrollbar::-webkit-scrollbar-track {
+  background: #1a1625;
+}
+
+.cm-s-synthwave84 .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
+.cm-s-synthwave84 .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #ff006e, #ff7edb);
+  border-radius: 6px;
+  box-shadow: 0 0 5px rgba(255, 0, 110, 0.5);
+}
+
+.cm-s-synthwave84 .CodeMirror-vscrollbar::-webkit-scrollbar-thumb:hover,
+.cm-s-synthwave84 .CodeMirror-hscrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #ff7edb, #36f9f6);
+  box-shadow: 0 0 10px rgba(255, 126, 219, 0.8);
+}

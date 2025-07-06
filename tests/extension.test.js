@@ -5,6 +5,15 @@ describe('JSON Viewer Extension', () => {
   let loader;
   let page;
 
+  beforeAll(async () => {
+    // Ensure extension is built before running any tests
+    const fs = require('fs');
+    const buildPath = path.join(__dirname, '../build/json_viewer');
+    if (!fs.existsSync(buildPath)) {
+      throw new Error('Extension not built. Run "npm run build" before running tests.');
+    }
+  });
+
   beforeEach(async () => {
     loader = new ExtensionLoader();
     const { page: browserPage } = await loader.launch();
@@ -24,17 +33,19 @@ describe('JSON Viewer Extension', () => {
       expect(isHighlighted).toBe(true);
     });
 
-    test('should load local JSON file', async () => {
-      const jsonPath = path.join(__dirname, 'fixtures/sample.json');
-      await loader.loadLocalFile(jsonPath);
+    test('should load GitHub raw JSON file', async () => {
+      // Use raw GitHub file instead of local file
+      const githubRawUrl = 'https://raw.githubusercontent.com/DigitalCyberSoft/json-viewer/refs/heads/master/tests/fixtures/sample.json';
+      await loader.loadJsonUrl(githubRawUrl);
       
       const isHighlighted = await loader.isJsonHighlighted();
       expect(isHighlighted).toBe(true);
     });
 
-    test('should detect and highlight JSONL format', async () => {
-      const jsonlPath = path.join(__dirname, 'fixtures/sample.jsonl');
-      await loader.loadLocalFile(jsonlPath);
+    test('should detect and highlight JSONL format from GitHub', async () => {
+      // Use raw GitHub file for JSONL testing
+      const githubJsonlUrl = 'https://raw.githubusercontent.com/DigitalCyberSoft/json-viewer/refs/heads/master/tests/fixtures/sample.jsonl';
+      await loader.loadJsonUrl(githubJsonlUrl);
       
       const isHighlighted = await loader.isJsonHighlighted();
       expect(isHighlighted).toBe(true);
@@ -43,8 +54,8 @@ describe('JSON Viewer Extension', () => {
 
   describe('Extension UI Elements', () => {
     test('should display extras buttons', async () => {
-      const jsonPath = path.join(__dirname, 'fixtures/sample.json');
-      await loader.loadLocalFile(jsonPath);
+      const githubRawUrl = 'https://raw.githubusercontent.com/DigitalCyberSoft/json-viewer/refs/heads/master/tests/fixtures/sample.json';
+      await loader.loadJsonUrl(githubRawUrl);
       
       const buttons = await loader.getExtrasButtons();
       expect(buttons.length).toBeGreaterThan(0);
@@ -56,8 +67,8 @@ describe('JSON Viewer Extension', () => {
     });
 
     test('should show copy menu options when copy button is clicked', async () => {
-      const jsonPath = path.join(__dirname, 'fixtures/sample.json');
-      await loader.loadLocalFile(jsonPath);
+      const githubRawUrl = 'https://raw.githubusercontent.com/DigitalCyberSoft/json-viewer/refs/heads/master/tests/fixtures/sample.json';
+      await loader.loadJsonUrl(githubRawUrl);
       
       const clicked = await loader.clickCopyButton();
       expect(clicked).toBe(true);
@@ -77,24 +88,24 @@ describe('JSON Viewer Extension', () => {
 
   describe('Copy Functionality', () => {
     test('should handle JSON copy format', async () => {
-      const jsonPath = path.join(__dirname, 'fixtures/sample.json');
-      await loader.loadLocalFile(jsonPath);
+      const githubRawUrl = 'https://raw.githubusercontent.com/DigitalCyberSoft/json-viewer/refs/heads/master/tests/fixtures/sample.json';
+      await loader.loadJsonUrl(githubRawUrl);
       
       const result = await loader.testCopyFormat('JSON');
       expect(result).toBe(true);
     });
 
     test('should handle CSV copy format for arrays', async () => {
-      const jsonlPath = path.join(__dirname, 'fixtures/sample.jsonl');
-      await loader.loadLocalFile(jsonlPath);
+      const githubJsonlUrl = 'https://raw.githubusercontent.com/DigitalCyberSoft/json-viewer/refs/heads/master/tests/fixtures/sample.jsonl';
+      await loader.loadJsonUrl(githubJsonlUrl);
       
       const result = await loader.testCopyFormat('CSV');
       expect(result).toBe(true);
     });
 
     test('should handle URL parameters copy format', async () => {
-      const jsonPath = path.join(__dirname, 'fixtures/sample.json');
-      await loader.loadLocalFile(jsonPath);
+      const githubRawUrl = 'https://raw.githubusercontent.com/DigitalCyberSoft/json-viewer/refs/heads/master/tests/fixtures/sample.json';
+      await loader.loadJsonUrl(githubRawUrl);
       
       const result = await loader.testCopyFormat('URL Parameters');
       expect(result).toBe(true);
@@ -158,8 +169,8 @@ if (require.main === module) {
       await loader.launch();
       
       console.log('Testing JSON highlighting...');
-      const jsonPath = path.join(__dirname, 'fixtures/sample.json');
-      await loader.loadLocalFile(jsonPath);
+      const githubRawUrl = 'https://raw.githubusercontent.com/DigitalCyberSoft/json-viewer/refs/heads/master/tests/fixtures/sample.json';
+      await loader.loadJsonUrl(githubRawUrl);
       
       const isHighlighted = await loader.isJsonHighlighted();
       console.log('JSON highlighted:', isHighlighted);
@@ -174,8 +185,8 @@ if (require.main === module) {
       }
       
       console.log('Testing JSONL support...');
-      const jsonlPath = path.join(__dirname, 'fixtures/sample.jsonl');
-      await loader.loadLocalFile(jsonlPath);
+      const githubJsonlUrl = 'https://raw.githubusercontent.com/DigitalCyberSoft/json-viewer/refs/heads/master/tests/fixtures/sample.jsonl';
+      await loader.loadJsonUrl(githubJsonlUrl);
       
       const jsonlHighlighted = await loader.isJsonHighlighted();
       console.log('JSONL highlighted:', jsonlHighlighted);

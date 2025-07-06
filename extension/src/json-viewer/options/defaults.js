@@ -9,7 +9,8 @@ module.exports = {
     clickableUrls: true,
     wrapLinkWithAnchorTag: false,
     openLinksInNewWindow: true,
-    autoHighlight: true
+    autoHighlight: true,
+    processIframes: true
   },
   structure: {
     readOnly: true,

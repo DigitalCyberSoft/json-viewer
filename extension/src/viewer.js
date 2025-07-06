@@ -1,6 +1,7 @@
 require('./viewer-styles');
 var JSONUtils = require('./json-viewer/check-if-json');
 var highlightContent = require('./json-viewer/highlight-content');
+var Storage = require('./json-viewer/storage');
 
 function checkFileUrlAccess() {
   // Check if we're on a file:// URL
@@ -42,16 +43,42 @@ function checkFileUrlAccess() {
   return true;
 }
 
+function isInIframe() {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
+  }
+}
+
 function onLoad() {
   // Check file URL access first
   if (!checkFileUrlAccess()) {
     return;
   }
   
-  JSONUtils.checkIfJson(function(pre) {
-    pre.hidden = true;
-    highlightContent(pre);
-  });
+  // Check if we're in an iframe and if iframe processing is enabled
+  if (isInIframe()) {
+    Storage.loadAsync(function(options) {
+      if (!options.addons.processIframes) {
+        if (process.env.NODE_ENV === 'development') {
+          console.debug("[JSONViewer] Iframe processing disabled via settings");
+        }
+        return;
+      }
+      
+      JSONUtils.checkIfJson(function(pre) {
+        pre.hidden = true;
+        highlightContent(pre);
+      });
+    });
+  } else {
+    // Not in iframe, proceed normally
+    JSONUtils.checkIfJson(function(pre) {
+      pre.hidden = true;
+      highlightContent(pre);
+    });
+  }
 }
 
 document.addEventListener("DOMContentLoaded", onLoad, false);

@@ -97,7 +97,7 @@ Highlighter.prototype = {
 
       var text = self.removeQuotes(textContent);
 
-      if (text.match(URL_PATTERN) && self.clickableUrls()) {
+      if (text && text.trim().length > 0 && text.match(URL_PATTERN) && self.clickableUrls()) {
         var decodedText = self.decodeText(text);
         elements.forEach(function(node) {
           if (self.wrapLinkWithAnchorTag()) {
@@ -131,7 +131,7 @@ Highlighter.prototype = {
     this.editor.off("mousedown");
     this.editor.on("mousedown", function(cm, event) {
       var element = event.target;
-      if (element.classList.contains("cm-string-link")) {
+      if (element.classList.contains("cm-string-link") && event.button === 0) {
         var url = element.getAttribute("data-url")
         var target = "_self";
         if (self.openLinksInNewWindow()) {
@@ -184,7 +184,10 @@ Highlighter.prototype = {
         CodeMirror.commands.clearSearch(cm);
         cm.setSelection(cm.getCursor());
         cm.focus();
-      }
+      },
+      "Cmd-Left": false,  // Allow browser back navigation
+      "Alt-Left": false,  // Allow browser back navigation  
+      "Ctrl-Left": false  // Allow browser back navigation (Windows/Linux)
     }
 
     if (this.options.structure.readOnly) {

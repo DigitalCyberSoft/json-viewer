@@ -61,10 +61,26 @@ function isJSON(jsonStr) {
     return false
   }
 
-  str = str.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@')
-  str = str.replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
-  str = str.replace(/(?:^|:|,)(?:\s*\[)+/g, '')
-  return (/^[\],:{}\s]*$/).test(str)
+  // Performance optimization: quick check for JSON start/end characters
+  var trimmed = str.trim();
+  if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) {
+    return false;
+  }
+  if (!trimmed.endsWith('}') && !trimmed.endsWith(']')) {
+    return false;
+  }
+
+  // Fast path for simple validation
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (e) {
+    // Fall back to regex-based validation for edge cases
+    str = str.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@')
+    str = str.replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
+    str = str.replace(/(?:^|:|,)(?:\s*\[)+/g, '')
+    return (/^[\],:{}\s]*$/).test(str)
+  }
 }
 
 function isJSONP(jsonStr) {
@@ -103,6 +119,27 @@ function isJSONL(text) {
 }
 
 function checkIfJson(sucessCallback, element) {
+  // Performance optimization: check content-type first
+  var contentType = document.contentType || '';
+  var isLikelyJson = contentType.includes('json') || 
+                    contentType.includes('application/json') ||
+                    contentType.includes('text/json') ||
+                    window.location.pathname.endsWith('.json') ||
+                    window.location.pathname.endsWith('.jsonl');
+  
+  // If content-type doesn't suggest JSON and URL doesn't end with .json/.jsonl, 
+  // do a quick content check first
+  if (!isLikelyJson) {
+    var bodyText = document.body.textContent || '';
+    var trimmed = bodyText.trim();
+    if (trimmed.length > 0 && 
+        !trimmed.startsWith('{') && 
+        !trimmed.startsWith('[') &&
+        !trimmed.includes('(')) { // JSONP check
+      return; // Early exit for obviously non-JSON content
+    }
+  }
+
   var pre = element || getPreWithSource();
 
   if (pre !== null &&

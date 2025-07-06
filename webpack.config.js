@@ -62,7 +62,12 @@ const config = {
         use: [
           MiniCssExtractPlugin.loader,
           "css-loader",
-          "sass-loader"
+          {
+            loader: "sass-loader",
+            options: {
+              api: "modern-compiler" // Use modern Sass API to eliminate deprecation warnings
+            }
+          }
         ]
       }
     ]
